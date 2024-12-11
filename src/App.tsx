@@ -8,7 +8,7 @@ const App = () => {
     <div>
       <Header />
 
-      <div className="border border-red-600 flex">
+      <div className="border border-red-600 flex px-5">
         <Navigation />
 
         <div className="border border-blue-600 w-[95%] py-5 px-8">
