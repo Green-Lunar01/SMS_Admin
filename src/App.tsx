@@ -7,9 +7,10 @@ import Rout from './components/Rout';
 import './index.css';
 import { AppContext } from './context/AppContext';
 import SchoolDetails from './components/SchoolDetails';
+import UserDetails from './components/UserDetails';
 
 const App = () => {
-  const { showNotification, showChat, showSchoolDetails } = useContext(AppContext);
+  const { showNotification, showChat, showSchoolDetails, showUserDetails } = useContext(AppContext);
 
   return (
     <div>
@@ -19,6 +20,7 @@ const App = () => {
         {showNotification && <Notification />}
         {showChat && <Broadcast />}
         {showSchoolDetails && <SchoolDetails />}
+        {showUserDetails && <UserDetails />}
         <Navigation />
 
         <div className="h-[90vh] overflow-hidden overflow-y-auto w-[95%] py-5 px-8">

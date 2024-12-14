@@ -18,6 +18,10 @@ interface School {
   website: string;
   src: string;
 }
+
+interface User {
+  name: string;
+}
 interface AppContextType {
   showNotification: boolean;
   setShowNotification: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,6 +29,10 @@ interface AppContextType {
   setShowSchoolDetails: React.Dispatch<React.SetStateAction<boolean>>;
   schoolDetails: School;
   setSchoolDetails: React.Dispatch<React.SetStateAction<School>>;
+  showUserDetails: boolean;
+  setShowUserDetails: React.Dispatch<React.SetStateAction<boolean>>;
+  userDetails: User;
+  setUserDetails: React.Dispatch<React.SetStateAction<User>>;
   showChat: boolean;
   setShowChat: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -32,6 +40,8 @@ interface AppContextType {
 export const AppContext = createContext<AppContextType>({} as AppContextType);
 
 const AppContextProvider = ({ children }: any) => {
+  const [showUserDetails, setShowUserDetails] = useState(false);
+  const [userDetails, setUserDetails] = useState({} as User);
   const [showSchoolDetails, setShowSchoolDetails] = useState(false);
   const [schoolDetails, setSchoolDetails] = useState({} as School);
   const [showNotification, setShowNotification] = useState(false);
@@ -47,7 +57,11 @@ const AppContextProvider = ({ children }: any) => {
         schoolDetails,
         setSchoolDetails,
         showSchoolDetails,
-        setShowSchoolDetails
+        setShowSchoolDetails,
+        showUserDetails,
+        setShowUserDetails,
+        userDetails,
+        setUserDetails
       }}
     >
       {children}
