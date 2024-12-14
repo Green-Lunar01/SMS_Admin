@@ -1,14 +1,14 @@
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import admin from '../icons/admin';
 import audit from '../icons/audit';
 import dashboard from '../icons/dashboard';
 import schools from '../icons/schools';
 import Logout from '../icons/logout';
 import subscription from '../icons/subscription';
-import { useState } from 'react';
 
 const Navigation = () => {
-  const [active, setActive] = useState('Dashboard');
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const navs = [
     {
@@ -39,17 +39,16 @@ const Navigation = () => {
   ];
 
   return (
-    <div className="w-[20%] pr-0 flex flex-col gap-5">
+    <div className="w-[20%] h-[90vh] pr-0 flex flex-col gap-5 border-r">
       {navs.map((nav, index) => (
         <Link
           key={index}
           to={nav.path}
-          onClick={() => setActive(nav.title)}
           className={`${
-            active === nav.title && 'bg-[#13A541] text-white'
-          } p-5 flex items-center gap-4`}
+            currentPath === nav.path && 'bg-primary-light text-white'
+          } transition-all duration-500 px-5 py-4 flex items-center gap-4`}
         >
-          {nav.icon({ color: active === nav.title ? '#FFFFFF' : '#000000' })}
+          {nav.icon({ color: currentPath === nav.path ? '#FFFFFF' : '#000000' })}
           {nav.title}
         </Link>
       ))}
