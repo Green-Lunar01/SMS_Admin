@@ -6,7 +6,7 @@ const Schools = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-  const handlePageChange = (page, size) => {
+  const handlePageChange = (page: number, size: number) => {
     setCurrentPage(page);
     setPageSize(size);
   };
@@ -23,10 +23,19 @@ const Schools = () => {
   const schools = Array(15).fill({
     Name: 'Mama high school',
     email: 'Brittany1@yahoo.com',
-    students: '600',
+    students: 600,
     location: 'Nigeria',
-    employee: '60',
-    status: 'active'
+    employee: 60,
+    teachers: 20,
+    totalSubjects: 15,
+    status: 'Active',
+    SignUpDate: '23/02/2024',
+    SignUpRole: 'School owner',
+    phoneNumber: '+2347067234678',
+    tagLine: 'Education is pride:',
+    address: 'N0, 4 Alagbo street lagos',
+    website: 'Www.mamahigh.com',
+    src: '/mock-school-logo.svg'
   });
 
   const paginatedData = schools.slice((currentPage - 1) * pageSize, currentPage * pageSize);
@@ -73,7 +82,7 @@ const Schools = () => {
       </p>
 
       <section className="w-full my-5">
-        <Table columns={columns} data={paginatedData} showHeader={true} />
+        <Table columns={columns} data={paginatedData} showHeader={true} isSchool={true} />
       </section>
 
       <Pagination totalItems={schools.length} onPageChange={handlePageChange} />

@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-const Table = ({ title, data, columns, showHeader = false }: any) => {
+import { useContext } from 'react';
+import { AppContext } from '../../context/AppContext';
+
+const Table = ({ title, data, columns, showHeader = false, isSchool = false }: any) => {
+  const { setSchoolDetails, setShowSchoolDetails } = useContext(AppContext);
+
   return (
     <div className="w-full bg-white rounded-lg">
       {title && <h2 className="text-lg font-semibold p-4 pb-2 border-b border-black">{title}</h2>}
@@ -21,15 +26,40 @@ const Table = ({ title, data, columns, showHeader = false }: any) => {
             </thead>
           )}
           <tbody>
-            {data.map((row: any, rowIndex: any) => (
-              <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-[#FBFBFB]'}>
-                {columns.map((column: any, colIndex: any) => (
-                  <td key={colIndex} className="py-2.5 px-4 text-sm text-gray-700">
-                    {row[column.accessor]}
-                  </td>
-                ))}
-              </tr>
-            ))}
+            {!isSchool &&
+              data.map((row: any, rowIndex: any) => (
+                <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-[#FBFBFB]'}>
+                  {columns.map((column: any, colIndex: any) => (
+                    <td key={colIndex} className="py-2.5 px-4 text-sm text-gray-700">
+                      {row[column.accessor]}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            {isSchool &&
+              data.map((row: any, rowIndex: any) => (
+                <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-[#FBFBFB]'}>
+                  {columns.map((column: any, colIndex: any) =>
+                    // if column === name, give td an onclick function that adds the school details to the context
+                    column.accessor === 'Name' ? (
+                      <td
+                        key={colIndex}
+                        className="py-2.5 px-4 text-sm text-gray-700 cursor-pointer"
+                        onClick={() => {
+                          setSchoolDetails(row);
+                          setShowSchoolDetails(true);
+                        }}
+                      >
+                        {row[column.accessor]}
+                      </td>
+                    ) : (
+                      <td key={colIndex} className="py-2.5 px-4 text-sm text-gray-700">
+                        {row[column.accessor]}
+                      </td>
+                    )
+                  )}
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
