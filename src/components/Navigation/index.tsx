@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router';
 import admin from '../icons/admin';
-import audit from '../icons/audit';
+// import audit from '../icons/audit';
 import dashboard from '../icons/dashboard';
 import schools from '../icons/schools';
 import Logout from '../icons/logout';
@@ -30,12 +30,12 @@ const Navigation = () => {
       title: 'Admin Role',
       icon: admin,
       path: '/admin-role'
-    },
-    {
-      title: 'Audit Log',
-      icon: audit,
-      path: '/audit-logs'
     }
+    // {
+    //   title: 'Audit Log',
+    //   icon: audit,
+    //   path: '/audit-logs'
+    // }
   ];
 
   return (
