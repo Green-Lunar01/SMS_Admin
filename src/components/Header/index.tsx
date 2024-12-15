@@ -27,12 +27,10 @@ const Header = () => {
             className="hover:scale-110 duration-500 transition-all"
           />
         </button>
-        <Link
-          to="/user"
-          className="text-3xl font-semibold w-10 h-10 flex justify-center items-center text-white bg-primary-light rounded-full hover:text-xl duration-500 transition-all"
-        >
+
+        <h1 className="text-3xl font-semibold w-10 h-10 flex justify-center items-center text-white bg-primary-light rounded-full hover:text-xl duration-500 transition-all">
           {User.name[0]}
-        </Link>
+        </h1>
       </div>
     </header>
   );

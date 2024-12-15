@@ -40,7 +40,7 @@ const Broadcast = () => {
             <button
               type="button"
               onClick={() => setActive('New Message')}
-              className={`px-3 py-2 text-xs rounded-sm ${
+              className={`px-3 py-2 text-sm rounded-sm ${
                 active === 'New Message' ? 'text-white bg-primary-light' : 'bg-white text-black'
               }`}
             >
@@ -49,7 +49,7 @@ const Broadcast = () => {
             <button
               type="button"
               onClick={() => setActive('Sent Message')}
-              className={`px-3 py-2 text-xs rounded-sm ${
+              className={`px-3 py-2 text-sm rounded-sm ${
                 active === 'Sent Message' ? 'text-white bg-primary-light' : 'bg-white text-black'
               }`}
             >
@@ -62,7 +62,7 @@ const Broadcast = () => {
               <div className="p-5 mt-5">
                 <p className="text-xs mb-2 outline-none">To</p>
 
-                <select className="w-full py-3 border rounded-sm outline-primary-light">
+                <select className="w-full p-3 border text-sm rounded-sm outline-primary-light">
                   <option value=""></option>
                   <option value="schools">Schools</option>
                   <option value="students">Students</option>
