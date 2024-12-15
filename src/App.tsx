@@ -9,14 +9,18 @@ import { AppContext } from './context/AppContext';
 import SchoolDetails from './components/SchoolDetails';
 import UserDetails from './components/UserDetails';
 import AdminDetails from './components/AdminDetails';
+import { useLocation } from 'react-router';
 
 const App = () => {
   const { showNotification, showChat, showSchoolDetails, showUserDetails, showAdminDetails } =
     useContext(AppContext);
 
+  const location = useLocation();
+  const currentPath = location.pathname;
+
   return (
     <div>
-      <Header />
+      {currentPath !== '/login' && <Header />}
 
       <div className="flex px-5">
         {showNotification && <Notification />}
@@ -24,9 +28,13 @@ const App = () => {
         {showSchoolDetails && <SchoolDetails />}
         {showUserDetails && <UserDetails />}
         {showAdminDetails && <AdminDetails />}
-        <Navigation />
+        {currentPath !== '/login' && <Navigation />}
 
-        <div className="h-[90vh] overflow-hidden overflow-y-auto w-[95%] py-5 px-8">
+        <div
+          className={`h-[90vh] overflow-hidden overflow-y-auto py-5 px-8 ${
+            currentPath !== '/login' ? 'w-[95%]' : 'w-full'
+          } `}
+        >
           <Rout />
         </div>
       </div>
