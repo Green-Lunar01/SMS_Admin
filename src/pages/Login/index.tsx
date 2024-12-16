@@ -12,12 +12,12 @@ const Login = () => {
             <p className="font-semibold text-xs">Email</p>
 
             <div className="relative">
-              <img src="/public/mail-icon.svg" alt="" className="absolute w-5 top-[40%] left-3" />
+              <img src="/mail-icon.svg" alt="" className="absolute w-5 top-[40%] left-3" />
               <input
                 type="text"
                 className="py-3 px-10 mt-2 rounded-md w-full outline-primary-light border border-[#D9D9D9]"
               />
-              {/* <img src="/public/mail-icon.svg" alt="" className="absolute top-3 left-3" /> */}
+              {/* <img src="/mail-icon.svg" alt="" className="absolute top-3 left-3" /> */}
             </div>
           </div>
 
@@ -25,16 +25,12 @@ const Login = () => {
             <p className="font-semibold text-xs">Password</p>
 
             <div className="relative">
-              <img
-                src="/public/password-lock-icon.svg"
-                alt=""
-                className="absolute w-5 top-[40%] left-3"
-              />
+              <img src="/password-lock-icon.svg" alt="" className="absolute w-5 top-[40%] left-3" />
               <input
                 type="password"
                 className="py-3 px-10 mt-2 rounded-md w-full outline-primary-light border border-[#D9D9D9]"
               />
-              {/* <img src="/public/mail-icon.svg" alt="" className="absolute top-3 left-3" /> */}
+              {/* <img src="/mail-icon.svg" alt="" className="absolute top-3 left-3" /> */}
             </div>
           </div>
 
