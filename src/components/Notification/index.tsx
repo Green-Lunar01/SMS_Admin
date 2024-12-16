@@ -117,7 +117,7 @@ const Notification = () => {
 
   return (
     <div className="bg-black bg-opacity-50 fixed top-0 left-0 w-full h-[100vh] z-[1000] flex items-end justify-end">
-      <div className="bg-white w-[30%] h-full">
+      <div className="bg-white w-full md:w-[30%] h-full">
         <div className="px-5 py-3 border-b flex items-center justify-between">
           <h1 className="font-semibold">Notifications</h1>
 

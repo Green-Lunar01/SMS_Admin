@@ -70,7 +70,7 @@ const AdminRole = () => {
     <div>
       <header className="text-3xl font-semibold">Admin Role Management</header>
 
-      <section className="text-sm flex justify-between items-center my-7">
+      <section className="text-sm flex flex-col md:flex-row justify-between items-start gap-5 md:gap-0 md:items-center my-7">
         <div className="flex items-center gap-3">
           <div className="relative">
             <img src="/search-icon.svg" alt="" className="w-5 absolute top-[25%] left-3" />
@@ -97,7 +97,7 @@ const AdminRole = () => {
         </button>
       </section>
 
-      <div className="flex items-center gap-5 my-7 w-[30%]">
+      <div className="flex items-center gap-5 my-7 md:w-[30%]">
         <button
           onClick={() => setActive('User')}
           type="button"

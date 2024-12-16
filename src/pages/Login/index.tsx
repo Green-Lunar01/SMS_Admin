@@ -1,7 +1,7 @@
 const Login = () => {
   return (
-    <div className="border h-[100vh] w-full flex justify-center items-center">
-      <div className="shadow-md w-[30%] px-12 py-16 flex items-start flex-col gap-7">
+    <div className="h-[100vh] w-full flex justify-center items-center">
+      <div className="shadow-md md:w-[30%] px-12 py-16 flex items-start flex-col gap-7">
         <h1 className="text-xl font-semibold text-primary-light text-center w-full">
           Welcome Back
         </h1>

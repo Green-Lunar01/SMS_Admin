@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { AppContext } from '../../context/AppContext.tsx';
 
 const Header = () => {
-  const { setShowChat, setShowNotification } = useContext(AppContext);
+  const { setShowChat, setShowNotification, setShowMobileNav } = useContext(AppContext);
 
   return (
     <header className="px-5 flex items-center justify-between border-b">
@@ -12,7 +12,7 @@ const Header = () => {
         <img src="/logo.svg" alt="" />
       </Link>
 
-      <div className="flex items-center gap-5">
+      <div className="md:flex items-center gap-5 hidden">
         <button type="button" onClick={() => setShowChat(true)}>
           <img
             src="/chat-icon.svg"
@@ -32,6 +32,10 @@ const Header = () => {
           {User.name[0]}
         </h1>
       </div>
+
+      <button type="button" onClick={() => setShowMobileNav(true)} className="md:hidden">
+        <img src="/menu.svg" alt="" />
+      </button>
     </header>
   );
 };

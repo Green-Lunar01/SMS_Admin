@@ -34,13 +34,13 @@ const Home = () => {
 
   return (
     <div className="">
-      <section className="flex justify-between">
-        <div className="w-[70%]">
+      <section className="w-full flex flex-col md:flex-row justify-between">
+        <div className="w-full md:w-[70%]">
           <LineChart />
         </div>
 
         {/*  */}
-        <div className="flex flex-col gap-5 w-[25%]">
+        <div className="flex flex-col gap-5 w-full md:w-[25%]">
           <div className="px-5 py-3 bg-[#DFF8EF] rounded-md">
             <h1 className="text-[11px] text-[#8A8A8A]">Total Schools</h1>
             <p className="text-lg mt-1">{data.totalSchools}</p>
@@ -58,11 +58,11 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="mt-10 flex items-start gap-8">
-        <div className="w-[48%]">
+      <section className="mt-10 flex flex-col md:flex-row items-start gap-8">
+        <div className="w-full md:w-[48%]">
           <Table title="Top Schools" columns={columns} data={topSchools} />
         </div>
-        <div className="w-[48%]">
+        <div className="w-full md:w-[48%]">
           <Table title="Top student subscribers" columns={columns2} data={topStudents} />
         </div>
       </section>

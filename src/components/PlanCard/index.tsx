@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 
 const PlanCard = ({ onSave }: { onSave: (data: any) => void }) => {
@@ -28,7 +29,7 @@ const PlanCard = ({ onSave }: { onSave: (data: any) => void }) => {
   };
 
   return (
-    <div className="border px-3 pt-4 pb-6 rounded-md w-[25%] text-sm">
+    <div className="border px-3 pt-4 pb-6 rounded-md w-full md:w-[25%] text-sm">
       <div className="flex justify-end items-end">
         <button type="button" className="text-primary-light" onClick={handleSave}>
           Save

@@ -43,6 +43,8 @@ interface AppContextType {
   setShowAdminDetails: React.Dispatch<React.SetStateAction<boolean>>;
   showChat: boolean;
   setShowChat: React.Dispatch<React.SetStateAction<boolean>>;
+  showMobileNav: boolean;
+  setShowMobileNav: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const AppContext = createContext<AppContextType>({} as AppContextType);
@@ -56,6 +58,7 @@ const AppContextProvider = ({ children }: any) => {
   const [schoolDetails, setSchoolDetails] = useState({} as School);
   const [showNotification, setShowNotification] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [showMobileNav, setShowMobileNav] = useState(false);
 
   return (
     <AppContext.Provider
@@ -75,7 +78,9 @@ const AppContextProvider = ({ children }: any) => {
         showAdminDetails,
         setShowAdminDetails,
         adminDetails,
-        setAdminDetails
+        setAdminDetails,
+        showMobileNav,
+        setShowMobileNav
       }}
     >
       {children}

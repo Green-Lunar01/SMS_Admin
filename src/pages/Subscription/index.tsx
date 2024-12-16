@@ -47,8 +47,8 @@ const Subscription = () => {
 
   return (
     <div>
-      <header className="text-3xl font-semibold">Schools</header>
-      <div className="flex items-center gap-5 mt-5 w-[30%]">
+      <header className="text-3xl font-semibold">Subscriptions</header>
+      <div className="flex items-center gap-5 mt-5 md:w-[30%]">
         <button
           onClick={() => setActive('Plan')}
           type="button"
@@ -76,6 +76,7 @@ const Subscription = () => {
             {cards.map((card, index) => (
               <PlanCard key={index} onSave={(data) => handleSaveCard(data, index)} />
             ))}
+
             <button type="button" onClick={handleAddCard} className="px-4 py-2 rounded-md">
               <img src="/add-circle-lg.svg" alt="" />
             </button>

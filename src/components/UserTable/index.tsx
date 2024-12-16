@@ -5,7 +5,7 @@ import Pagination from '../Pagination';
 const UserTable = ({ columns, paginatedData, schools, handlePageChange }: any) => {
   return (
     <div>
-      <section className="flex justify-between items-center py-5 mt-5">
+      <section className="flex flex-col md:flex-row justify-between items-start gap-5 md:gap-0 md:items-center py-5 md:mt-5">
         <div className="flex items-center gap-3">
           <div className="relative">
             <img src="/search-icon.svg" alt="" className="w-5 absolute top-[25%] left-3" />
