@@ -73,7 +73,7 @@ const Subscription = () => {
       <section>
         {active === 'Plan' && (
           <div className="flex flex-wrap gap-5 mt-5 w-full">
-            {cards.map((card, index) => (
+            {cards.map((_card, index) => (
               <PlanCard key={index} onSave={(data) => handleSaveCard(data, index)} />
             ))}
 
