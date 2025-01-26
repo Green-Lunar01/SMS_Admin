@@ -39,7 +39,7 @@ const Navigation = () => {
   ];
 
   return (
-    <div className="w-[20%] h-[90vh] pr-0 hidden md:flex flex-col gap-5 border-r">
+    <div className="w-[20%] h-[90vh] pr-0 hidden lg:flex flex-col gap-5 border-r">
       {navs.map((nav, index) => (
         <Link
           key={index}

@@ -2,22 +2,23 @@
 import { useState } from 'react';
 
 const Role = ({ data, onSave, onDelete }: any) => {
+  console.log('data', data);
   const [isEditing, setIsEditing] = useState(false); // State to toggle edit mode
-  const [roleName, setRoleName] = useState(data.role); // State to hold role name
-  const [features, setFeatures] = useState([...data.features]); // State for features array
+  const [roleName, setRoleName] = useState(data.role_name); // State to hold role name
+  const [permissions, setPermissions] = useState([...data.permissions]); // State for permissions array
 
   const handleFeatureChange = (index: number, value: string) => {
-    const updatedFeatures = [...features];
-    updatedFeatures[index] = value;
-    setFeatures(updatedFeatures);
+    const updatedPermissions = [...permissions];
+    updatedPermissions[index] = value;
+    setPermissions(updatedPermissions);
   };
 
   const handleAddFeature = () => {
-    setFeatures([...features, '']); // Add an empty string to create a new input field
+    setPermissions([...permissions, '']); // Add an empty string to create a new input field
   };
 
   const handleSave = () => {
-    onSave({ role: roleName, features }); // Pass updated role data to parent
+    onSave({ role: roleName, permissions }); // Pass updated role data to parent
     setIsEditing(false); // Exit edit mode
   };
 
@@ -41,7 +42,7 @@ const Role = ({ data, onSave, onDelete }: any) => {
             />
           </div>
           <div className="flex flex-col items-start w-[60%] gap-2">
-            {features.map((item: string, i: number) => (
+            {permissions?.map((item: string, i: number) => (
               <div key={i} className="w-full flex items-center gap-2">
                 <input
                   type="text"
@@ -79,9 +80,9 @@ const Role = ({ data, onSave, onDelete }: any) => {
       ) : (
         // View mode
         <>
-          <p className="w-[30%]">{data.role}</p>
+          <p className="w-[30%] text-black">{data.role_name}</p>
           <div className="flex flex-col items-start w-[60%] gap-2">
-            {data.features.map((item: string, i: number) => (
+            {data?.permissions?.map((item: string, i: number) => (
               <p className="font-light" key={i}>
                 {item}
               </p>

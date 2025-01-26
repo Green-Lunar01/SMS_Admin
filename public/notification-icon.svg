@@ -2,10 +2,10 @@
   <rect width="36" height="36" rx="16" fill="#F5F5F5" />
   <path
     d="M11.1584 17.491C11.0849 18.887 11.1694 20.373 9.92213 21.3084C9.34164 21.7438 9 22.427 9 23.1527C9 24.1508 9.7818 25 10.8 25H25.2C26.2182 25 27 24.1508 27 23.1527C27 22.427 26.6584 21.7438 26.0779 21.3084C24.8306 20.373 24.9151 18.887 24.8416 17.491C24.6501 13.8522 21.6438 11 18 11C14.3562 11 11.3499 13.8522 11.1584 17.491Z"
-    stroke="#08190E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    stroke="#08190E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   <path
     d="M16.5 9.125C16.5 9.95343 17.1716 11 18 11C18.8284 11 19.5 9.95343 19.5 9.125C19.5 8.29657 18.8284 8 18 8C17.1716 8 16.5 8.29657 16.5 9.125Z"
-    stroke="#08190E" stroke-width="1.5" />
+    stroke="#08190E" strokeWidth="1.5" />
   <path d="M21 25C21 26.6569 19.6569 28 18 28C16.3431 28 15 26.6569 15 25" stroke="#08190E"
-    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>

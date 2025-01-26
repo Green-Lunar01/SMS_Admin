@@ -7,7 +7,7 @@ import Rout from './components/Rout';
 import './index.css';
 import { AppContext } from './context/AppContext';
 import SchoolDetails from './components/SchoolDetails';
-import UserDetails from './components/UserDetails';
+import StudentDetails from './components/StudentDetails';
 import AdminDetails from './components/AdminDetails';
 import { useLocation } from 'react-router';
 import MobileNavigation from './components/MobileNavigation';
@@ -17,7 +17,7 @@ const App = () => {
     showNotification,
     showChat,
     showSchoolDetails,
-    showUserDetails,
+    showStudentDetails,
     showAdminDetails,
     showMobileNav
   } = useContext(AppContext);
@@ -33,14 +33,14 @@ const App = () => {
         {showNotification && <Notification />}
         {showChat && <Broadcast />}
         {showSchoolDetails && <SchoolDetails />}
-        {showUserDetails && <UserDetails />}
+        {showStudentDetails && <StudentDetails />}
         {showAdminDetails && <AdminDetails />}
         {currentPath !== '/login' && <Navigation />}
         {showMobileNav && <MobileNavigation />}
 
         <div
-          className={`h-[90vh] overflow-hidden overflow-y-auto py-5 px-5 md:px-8 ${
-            currentPath !== '/login' ? 'w-full md:w-[95%]' : 'w-full'
+          className={`h-[90vh] overflow-hidden overflow-y-auto py-5 px-5 lg:px-8 ${
+            currentPath !== '/login' ? 'w-full lg:w-[95%]' : 'w-full'
           } `}
         >
           <Rout />

@@ -17,8 +17,8 @@ const Table = ({
   const {
     setSchoolDetails,
     setShowSchoolDetails,
-    setUserDetails,
-    setShowUserDetails,
+    setStudentDetails,
+    setShowStudentDetails,
     setShowAdminDetails,
     setAdminDetails
   } = useContext(AppContext);
@@ -53,8 +53,13 @@ const Table = ({
             </thead>
           )}
           <tbody>
+            {data?.length === 0 && (
+              <tr className="flex items-center justify-center">
+                <td>No data available</td>
+              </tr>
+            )}
             {!isSchool &&
-              data.map((row: any, rowIndex: any) => (
+              data?.map((row: any, rowIndex: any) => (
                 <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-[#FBFBFB]'}>
                   {columns.map((column: any, colIndex: any) => {
                     if (column.accessor === 'status') {
@@ -94,7 +99,7 @@ const Table = ({
                 </tr>
               ))}
             {isSchool &&
-              data.map((row: any, rowIndex: any) => (
+              data?.map((row: any, rowIndex: any) => (
                 <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-[#FBFBFB]'}>
                   {columns.map((column: any, colIndex: any) => {
                     if (column.accessor === 'Name') {
@@ -116,8 +121,8 @@ const Table = ({
                           key={colIndex}
                           className="py-2.5 px-4 text-sm text-green-700 cursor-pointer"
                           onClick={() => {
-                            setUserDetails(row);
-                            setShowUserDetails(true);
+                            setStudentDetails(row);
+                            setShowStudentDetails(true);
                           }}
                         >
                           {row[column.accessor]}

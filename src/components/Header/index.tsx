@@ -12,7 +12,7 @@ const Header = () => {
         <img src="/logo.svg" alt="" />
       </Link>
 
-      <div className="md:flex items-center gap-5 hidden">
+      <div className="lg:flex items-center gap-5 hidden">
         <button type="button" onClick={() => setShowChat(true)}>
           <img
             src="/chat-icon.svg"
@@ -33,7 +33,7 @@ const Header = () => {
         </h1>
       </div>
 
-      <button type="button" onClick={() => setShowMobileNav(true)} className="md:hidden">
+      <button type="button" onClick={() => setShowMobileNav(true)} className="lg:hidden">
         <img src="/menu.svg" alt="" />
       </button>
     </header>

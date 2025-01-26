@@ -2,8 +2,8 @@
 import { useContext } from 'react';
 import { AppContext } from '../../context/AppContext';
 
-const UserDetails = () => {
-  const { userDetails, setShowUserDetails } = useContext(AppContext);
+const StudentDetails = () => {
+  const { studentDetails, setShowStudentDetails } = useContext(AppContext);
 
   const detailFields = [
     { label: 'Name', key: 'name' },
@@ -20,7 +20,7 @@ const UserDetails = () => {
         {/* Header */}
         <div className="px-5 py-3 border-b flex items-center justify-between">
           <h1 className="font-semibold">User Details</h1>
-          <button type="button" onClick={() => setShowUserDetails(false)}>
+          <button type="button" onClick={() => setShowStudentDetails(false)}>
             <img src="/close.svg" alt="Close" />
           </button>
         </div>
@@ -33,7 +33,7 @@ const UserDetails = () => {
           {detailFields.map(({ label, key }) => (
             <div key={key} className="flex items-center justify-between w-[75%]">
               <p>{label}:</p>
-              <p className="font-light">{(userDetails as any)[key]}</p>
+              <p className="font-light">{(studentDetails as any)[key]}</p>
             </div>
           ))}
         </div>
@@ -42,4 +42,4 @@ const UserDetails = () => {
   );
 };
 
-export default UserDetails;
+export default StudentDetails;
