@@ -19,14 +19,12 @@ const AdminRole = () => {
   const [loading, setLoading] = useState(true);
 
   const axiosInstance = useAxiosInstance();
+  const baseUrl = import.meta.env.VITE_BASE_URL;
 
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        'https://edusoft.elonmuskreeve.com/admin/users',
-        axiosInstance
-      );
+      const response = await axios.get(`${baseUrl}/users`, axiosInstance);
       console.log('users', response.data.data);
       setUsers(response.data.data);
     } catch (error) {
@@ -39,10 +37,7 @@ const AdminRole = () => {
   const fetchRoles = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        'https://edusoft.elonmuskreeve.com/admin/users/roles',
-        axiosInstance
-      );
+      const response = await axios.get(`${baseUrl}/admin/roles`, axiosInstance);
       console.log('roles', response.data.data);
       setRoles(response.data.data);
     } catch (error) {

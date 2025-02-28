@@ -18,6 +18,7 @@ const AddUser = ({ roles, setActive }: AddUserProps) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const axiosInstance = useAxiosInstance();
+  const baseUrl = import.meta.env.VITE_BASE_URL;
 
   const handleAddUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -38,11 +39,7 @@ const AddUser = ({ roles, setActive }: AddUserProps) => {
       confirmPassword
     };
     try {
-      const response = await axios.post(
-        `https://edusoft.elonmuskreeve.com/admin/users/create`,
-        data,
-        axiosInstance
-      );
+      const response = await axios.post(`${baseUrl}/admin/roles/create`, data, axiosInstance);
       console.log(response.data.data);
     } catch (error) {
       console.error('Error adding user:', error);

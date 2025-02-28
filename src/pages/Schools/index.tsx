@@ -10,17 +10,16 @@ const Schools = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
+
   const pageSize = 10;
   const axiosInstance = useAxiosInstance();
+  const baseUrl = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
-          'https://edusoft.elonmuskreeve.com/admin/get-schools',
-          axiosInstance
-        );
+        const response = await axios.get(`${baseUrl}/admin/get-schools`, axiosInstance);
         console.log(response.data.data.schools);
         setData(response.data.data.schools);
       } catch (error) {

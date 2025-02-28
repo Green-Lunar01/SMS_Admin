@@ -9,11 +9,12 @@ const Login = () => {
 
   const { setUserDetails } = useContext(AppContext);
   const navigate = useNavigate();
+  const baseUrl = import.meta.env.VITE_BASE_URL;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://edusoft.elonmuskreeve.com/admin/auth/signin', {
+      const response = await axios.post(`${baseUrl}/admin/auth/signin`, {
         email,
         pswd: password
       });

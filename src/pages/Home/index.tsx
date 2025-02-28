@@ -16,14 +16,12 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   const axiosConfig = useAxiosInstance();
+  const baseUrl = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          'https://edusoft.elonmuskreeve.com/admin/get-overview',
-          axiosConfig
-        );
+        const response = await axios.get(`${baseUrl}/admin/get-overview`, axiosConfig);
         setData(response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);

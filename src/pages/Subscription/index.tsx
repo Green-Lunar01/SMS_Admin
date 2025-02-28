@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { ClimbingBoxLoader } from 'react-spinners';
@@ -24,7 +25,10 @@ const Subscription = () => {
   const [isNewSub, setIsNewSub] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const [searchQuery, setSearchQuery] = useState('');
+
   const axiosInstance = useAxiosInstance();
+  const baseUrl = import.meta.env.VITE_BASE_URL;
 
   const handleAddCard = () => {
     setIsNewSub(true);
@@ -34,11 +38,7 @@ const Subscription = () => {
   const handleSaveSubscription = async (data: Subscription) => {
     setLoading(true);
     try {
-      await axios.put(
-        `https://edusoft.elonmuskreeve.com/admin/subscriptions/edit/${data.id}`,
-        data,
-        axiosInstance
-      );
+      await axios.put(`${baseUrl}/admin/subscriptions/edit/${data.id}`, data, axiosInstance);
       console.log('refetching data');
       await fetchData();
     } catch (error) {
@@ -51,11 +51,7 @@ const Subscription = () => {
   const handleCreateSubscription = async (data: Subscription) => {
     setLoading(true);
     try {
-      await axios.post(
-        `https://edusoft.elonmuskreeve.com/admin/subscriptions/create`,
-        data,
-        axiosInstance
-      );
+      await axios.post(`${baseUrl}/admin/subscriptions/create`, data, axiosInstance);
 
       console.log('refetching data');
       await fetchData();
@@ -87,10 +83,7 @@ const Subscription = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        'https://edusoft.elonmuskreeve.com/admin/subscriptions',
-        axiosInstance
-      );
+      const response = await axios.get(`${baseUrl}/admin/subscriptions`, axiosInstance);
       setData(response.data.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -103,6 +96,15 @@ const Subscription = () => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleSearch = (event: any) => {
+    console.log('event.target.value', event.target.value);
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredData = data.filter((school: any) =>
+    school.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const columns = [
     { header: 'Name', accessor: 'name' },
@@ -160,9 +162,10 @@ const Subscription = () => {
       <section>
         {active === 'Plan' && (
           <div className="flex flex-wrap gap-5 mt-5 w-full">
-            {data.map((_card, index) => (
-              <PlanCard data={_card} key={index} onSave={(data) => handleSaveCard(data, index)} />
-            ))}
+            {data &&
+              data.map((_card, index) => (
+                <PlanCard data={_card} key={index} onSave={(data) => handleSaveCard(data, index)} />
+              ))}
 
             <button type="button" onClick={handleAddCard} className="px-4 py-2 rounded-md">
               <img src="/add-circle-lg.svg" alt="" />
@@ -175,8 +178,10 @@ const Subscription = () => {
             <UserTable
               columns={columns}
               paginatedData={paginatedData}
-              schools={schools}
+              schools={filteredData}
               handlePageChange={handlePageChange}
+              handleSearch={handleSearch}
+              searchQuery={searchQuery}
             />
           </div>
         )}

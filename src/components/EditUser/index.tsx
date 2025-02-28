@@ -7,12 +7,12 @@ interface Role {
 }
 
 interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  status: boolean;
-  created_by: string;
+  id?: number;
+  name?: string;
+  email?: string;
+  role?: string;
+  status?: boolean;
+  created_by?: string;
 }
 
 interface AddUserProps {
@@ -26,7 +26,9 @@ const EditUser = ({ roles, setActive, data }: AddUserProps) => {
   const [fullName, setFullName] = useState(data.name);
   const [email, setEmail] = useState(data.email);
   const [role, setRole] = useState(data.role);
+
   const axiosInstance = useAxiosInstance();
+  const baseUrl = import.meta.env.VITE_BASE_URL;
 
   const handleEditUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,11 +43,7 @@ const EditUser = ({ roles, setActive, data }: AddUserProps) => {
     };
 
     try {
-      await axios.put(
-        `https://edusoft.elonmuskreeve.com/admin/users/edit/${data.id}`,
-        formData,
-        axiosInstance
-      );
+      await axios.put(`${baseUrl}/admin/roles/edit/${data.id}`, formData, axiosInstance);
     } catch (error) {
       console.error('Error adding user:', error);
     } finally {
