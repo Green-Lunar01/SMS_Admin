@@ -40,8 +40,7 @@ const AddUser = ({ roles, setActive }: AddUserProps) => {
       confirmPassword
     };
     try {
-      const response = await axios.post(`${baseUrl}/admin/users/create`, data, axiosInstance);
-      console.log(response.data.data);
+      await axios.post(`${baseUrl}/admin/users/create`, data, axiosInstance);
     } catch (error) {
       console.error('Error adding user:', error);
     } finally {

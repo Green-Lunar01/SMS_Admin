@@ -20,7 +20,6 @@ const Schools = () => {
       setLoading(true);
       try {
         const response = await axios.get(`${baseUrl}/admin/get-schools`, axiosInstance);
-        console.log(response.data.data.schools);
         setData(response.data.data.schools);
       } catch (error) {
         console.error('Error fetching data:', error);

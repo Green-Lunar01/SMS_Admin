@@ -59,7 +59,6 @@ const Navigation = () => {
         onClick={() => {
           sessionStorage.removeItem('edusoftToken');
           navigate('/login');
-          console.log('Logout');
         }}
         className={`p-5 flex items-center gap-4 z-[2000]`}
       >

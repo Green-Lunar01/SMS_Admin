@@ -50,6 +50,7 @@ const Home = () => {
     return (
       <div className="flex items-center justify-center h-[100vh]">
         <ClimbingBoxLoader color="#DFF8EF" />
+        {/* <img src="/animated-logo.svg" alt="" className="w-[50%]" /> */}
       </div>
     );
   }

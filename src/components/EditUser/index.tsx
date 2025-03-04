@@ -49,7 +49,6 @@ const EditUser = ({ roles, setActive, data }: AddUserProps) => {
         formData,
         axiosInstance
       );
-      console.log('edit user res', response);
 
       if (response.status === 200) {
         setActive('User');

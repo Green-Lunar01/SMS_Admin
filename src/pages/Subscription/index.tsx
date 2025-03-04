@@ -68,7 +68,7 @@ const Subscription = () => {
     const updatedCards = [...cards];
     updatedCards[index] = data;
     setCards(updatedCards);
-    console.log('Updated Card:', data); // Debugging or further processing
+
     if (isNewSub) {
       handleCreateSubscription(data);
     } else {
@@ -112,7 +112,6 @@ const Subscription = () => {
   }, []);
 
   const handleSearch = (event: any) => {
-    console.log('event.target.value', event.target.value);
     setSearchQuery(event.target.value);
   };
 

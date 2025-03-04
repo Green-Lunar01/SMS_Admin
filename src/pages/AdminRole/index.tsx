@@ -77,17 +77,13 @@ const AdminRole = () => {
   }
 
   const handleSaveRole = async (updatedRole: any, isEdit: any) => {
-    console.log('isEdit', isEdit);
     if (isEdit === true) {
-      console.log('updatedRole', updatedRole);
       try {
         const response = await axios.put(
           `${baseUrl}/admin/roles/edit/${updatedRole.id}`,
           updatedRole,
           axiosInstance
         );
-
-        console.log('edit response', response);
 
         if (response.status === 200) {
           const serverRole = {
@@ -98,7 +94,6 @@ const AdminRole = () => {
 
           const updatedRoles = roles.map((role) => (role.id === serverRole.id ? serverRole : role));
 
-          console.log('updatedRoles after edit', updatedRoles);
           setRoles(updatedRoles);
         }
       } catch (error) {
@@ -136,8 +131,6 @@ const AdminRole = () => {
   };
 
   const handleDeleteRole = async (index: number) => {
-    console.log('delete role at index:', index);
-
     try {
       const response = await axios.delete(`${baseUrl}/admin/roles/delete/${index}`, axiosInstance);
 
@@ -150,9 +143,7 @@ const AdminRole = () => {
     }
   };
 
-  const handleDeletUser = async (index: number) => {
-    console.log('delete role at index:', index);
-
+  const handleDeleteUser = async (index: number) => {
     try {
       const response = await axios.delete(`${baseUrl}/admin/users/delete/${index}`, axiosInstance);
 
@@ -164,8 +155,6 @@ const AdminRole = () => {
       console.error('Error deleting user:', error);
     }
   };
-
-  console.log('paginatedData', paginatedData);
 
   return (
     <div>
@@ -233,11 +222,10 @@ const AdminRole = () => {
                     deletable={true}
                     editable={true}
                     onEdit={(row: any) => {
-                      console.log('Edit row:', row);
                       setEditedUser(row);
                       setActive('edit');
                     }}
-                    onDelete={(row: any) => handleDeletUser(row.id)}
+                    onDelete={(row: any) => handleDeleteUser(row.id)}
                     columns={columns}
                     data={paginatedData}
                     showHeader={true}

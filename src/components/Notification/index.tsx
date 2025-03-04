@@ -14,7 +14,6 @@ const Notification = () => {
   const getNotifications = async () => {
     try {
       const response = await axios.get(`${baseUrl}/admin/notifications`, axiosInstance);
-      console.log(response.data);
       // Handle success
 
       if (response.status === 200) {

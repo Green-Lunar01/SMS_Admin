@@ -25,7 +25,6 @@ const Broadcast = () => {
         },
         axiosInstance
       );
-      console.log(response.data);
       // Handle success
 
       if (response.status === 200) {
@@ -46,7 +45,6 @@ const Broadcast = () => {
   const getMessages = async () => {
     try {
       const response = await axios.get(`${baseUrl}/admin/messages`, axiosInstance);
-      console.log(response.data);
       // Handle success
 
       if (response.status === 200) {

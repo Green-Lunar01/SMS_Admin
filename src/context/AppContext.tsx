@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 
 interface School {
   teachers: string;
@@ -73,10 +73,6 @@ const AppContextProvider = ({ children }: any) => {
   const [showNotification, setShowNotification] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [showMobileNav, setShowMobileNav] = useState(false);
-
-  useEffect(() => {
-    console.log('userDetails:', userDetails);
-  }, [userDetails]);
 
   return (
     <AppContext.Provider
