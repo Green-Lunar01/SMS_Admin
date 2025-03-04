@@ -76,7 +76,7 @@ const Table = ({
                     } else {
                       return (
                         <td key={colIndex} className="py-2.5 px-4 text-sm text-gray-700">
-                          {row[column.accessor]}
+                          {row[column.accessor] || 'Nil'}
                         </td>
                       );
                     }

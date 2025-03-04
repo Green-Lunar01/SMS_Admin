@@ -4,6 +4,7 @@ import axios from 'axios';
 
 interface Role {
   role_name: string;
+  id?: number;
 }
 interface AddUserProps {
   roles: Role[];
@@ -14,7 +15,7 @@ const AddUser = ({ roles, setActive }: AddUserProps) => {
   const [loading, setLoading] = useState(false);
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState(0);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const axiosInstance = useAxiosInstance();
@@ -34,12 +35,12 @@ const AddUser = ({ roles, setActive }: AddUserProps) => {
     const data = {
       name: fullName,
       email,
-      role,
+      role_id: role,
       password,
       confirmPassword
     };
     try {
-      const response = await axios.post(`${baseUrl}/admin/roles/create`, data, axiosInstance);
+      const response = await axios.post(`${baseUrl}/admin/users/create`, data, axiosInstance);
       console.log(response.data.data);
     } catch (error) {
       console.error('Error adding user:', error);
@@ -80,12 +81,12 @@ const AddUser = ({ roles, setActive }: AddUserProps) => {
           <p className="font-semibold text-xs">Role</p>
           <select
             value={role}
-            onChange={(e) => setRole(e.target.value)}
+            onChange={(e) => setRole(Number(e.target.value))}
             className="py-3 px-1 mt-2 rounded-md w-full text-sm outline-primary-light border border-[#D9D9D9]"
           >
             <option value=""></option>
             {roles.map((role: Role, i: number) => (
-              <option key={i} value={role.role_name}>
+              <option key={i} value={role.id}>
                 {role.role_name}
               </option>
             ))}

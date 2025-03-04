@@ -23,6 +23,7 @@ const Subscription = () => {
   const [cards, setCards] = useState<Subscription[]>([]);
   const [data, setData] = useState<Subscription[]>([]);
   const [isNewSub, setIsNewSub] = useState(false);
+  const [subscribers, setSubscribers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -92,8 +93,21 @@ const Subscription = () => {
     }
   };
 
+  const fetchSubscribers = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${baseUrl}/admin/subscribers`, axiosInstance);
+      setSubscribers(response.data.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchData();
+    fetchSubscribers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -107,24 +121,15 @@ const Subscription = () => {
   );
 
   const columns = [
-    { header: 'Name', accessor: 'name' },
+    { header: 'Name', accessor: 'student_name' },
     { header: 'Username', accessor: 'username' },
-    { header: 'School', accessor: 'school' },
-    { header: 'Class', accessor: 'class' },
-    { header: 'Plan', accessor: 'plan' },
-    { header: 'Status', accessor: 'status' }
+    { header: 'School', accessor: 'school_name' },
+    { header: 'Class', accessor: 'class_name' },
+    { header: 'Plan', accessor: 'subscription_name' }
+    // { header: 'Status', accessor: 'status' }
   ];
 
-  const schools = Array(15).fill({
-    name: 'Olivia Huel',
-    username: 'BT456789763',
-    school: 'Pa academy',
-    class: 'J.S.S 1',
-    plan: 'Pro',
-    status: 'Active'
-  });
-
-  const paginatedData = schools.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  const paginatedData = subscribers.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   if (loading) {
     return (

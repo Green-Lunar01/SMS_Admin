@@ -4,6 +4,7 @@ import { useAxiosInstance } from '../../hooks/axios';
 
 interface Role {
   role_name: string;
+  id?: number;
 }
 
 interface User {
@@ -25,7 +26,7 @@ const EditUser = ({ roles, setActive, data }: AddUserProps) => {
   const [loading, setLoading] = useState(false);
   const [fullName, setFullName] = useState(data.name);
   const [email, setEmail] = useState(data.email);
-  const [role, setRole] = useState(data.role);
+  const [role, setRole] = useState(0);
 
   const axiosInstance = useAxiosInstance();
   const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -38,17 +39,25 @@ const EditUser = ({ roles, setActive, data }: AddUserProps) => {
     const formData = {
       name: data.name,
       email: data.email,
-      role: data.role,
+      role_id: role,
       status: true
     };
 
     try {
-      await axios.put(`${baseUrl}/admin/roles/edit/${data.id}`, formData, axiosInstance);
+      const response = await axios.put(
+        `${baseUrl}/admin/users/edit/${data.id}`,
+        formData,
+        axiosInstance
+      );
+      console.log('edit user res', response);
+
+      if (response.status === 200) {
+        setActive('User');
+      }
     } catch (error) {
       console.error('Error adding user:', error);
     } finally {
       setLoading(false);
-      setActive('User');
     }
   };
 
@@ -83,12 +92,12 @@ const EditUser = ({ roles, setActive, data }: AddUserProps) => {
           <p className="font-semibold text-xs">Role</p>
           <select
             value={role}
-            onChange={(e) => setRole(e.target.value)}
+            onChange={(e) => setRole(Number(e.target.value))}
             className="py-3 px-1 mt-2 rounded-md w-full text-sm outline-primary-light border border-[#D9D9D9]"
           >
             <option value=""></option>
             {roles.map((role: Role, i: number) => (
-              <option key={i} value={role.role_name}>
+              <option key={i} value={role.id}>
                 {role.role_name}
               </option>
             ))}

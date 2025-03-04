@@ -13,7 +13,9 @@ const AdminRole = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [active, setActive] = useState('User');
-  const [roles, setRoles] = useState<{ role_name: string; permissions: string[] }[]>([]);
+  const [roles, setRoles] = useState<{ id?: number; role_name: string; permissions: string[] }[]>(
+    []
+  );
   const [users, setUsers] = useState([]);
   const [editedUser, setEditedUser] = useState({});
   const [loading, setLoading] = useState(true);
@@ -24,8 +26,7 @@ const AdminRole = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${baseUrl}/users`, axiosInstance);
-      console.log('users', response.data.data);
+      const response = await axios.get(`${baseUrl}/admin/users`, axiosInstance);
       setUsers(response.data.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -38,7 +39,6 @@ const AdminRole = () => {
     setLoading(true);
     try {
       const response = await axios.get(`${baseUrl}/admin/roles`, axiosInstance);
-      console.log('roles', response.data.data);
       setRoles(response.data.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -57,8 +57,8 @@ const AdminRole = () => {
     { header: 'Name', accessor: 'name' },
     { header: 'Email Address', accessor: 'email' },
     { header: 'Role', accessor: 'role' },
-    { header: 'Created Date', accessor: 'created_by' },
-    { header: 'Status', accessor: 'status' }
+    { header: 'Creator', accessor: 'created_by' }
+    // { header: 'Status', accessor: 'status' }
   ];
 
   const paginatedData = users.slice((currentPage - 1) * pageSize, currentPage * pageSize);
@@ -68,24 +68,104 @@ const AdminRole = () => {
     setPageSize(size);
   };
 
-  const handleAddRole = () => {
+  function handleAddRole() {
     const newRole = {
       role_name: 'New Role',
       permissions: ['Define role features here']
     };
     setRoles([...roles, newRole]); // Append the new role to the roles list
+  }
+
+  const handleSaveRole = async (updatedRole: any, isEdit: any) => {
+    console.log('isEdit', isEdit);
+    if (isEdit === true) {
+      console.log('updatedRole', updatedRole);
+      try {
+        const response = await axios.put(
+          `${baseUrl}/admin/roles/edit/${updatedRole.id}`,
+          updatedRole,
+          axiosInstance
+        );
+
+        console.log('edit response', response);
+
+        if (response.status === 200) {
+          const serverRole = {
+            id: response.data.data.roleId,
+            role_name: response.data.data.role_name,
+            permissions: response.data.data.permissions
+          };
+
+          const updatedRoles = roles.map((role) => (role.id === serverRole.id ? serverRole : role));
+
+          console.log('updatedRoles after edit', updatedRoles);
+          setRoles(updatedRoles);
+        }
+      } catch (error) {
+        console.error('Error adding user:', error);
+      }
+    } else {
+      try {
+        const response = await axios.post(
+          `${baseUrl}/admin/roles/create`,
+          updatedRole,
+          axiosInstance
+        );
+
+        if (response.status === 201) {
+          const serverRole = {
+            id: response.data.data.roleId,
+            role_name: response.data.data.role_name,
+            permissions: response.data.data.permissions
+          };
+
+          const updatedRoles = roles.map((role) => {
+            // If this role matches what we're trying to save and has no ID, replace it
+            if (!role.id && role.role_name === 'New Role') {
+              return serverRole;
+            }
+            return role;
+          });
+
+          setRoles(updatedRoles);
+        }
+      } catch (error) {
+        console.error('Error adding user:', error);
+      }
+    }
   };
 
-  const handleSaveRole = (updatedRole: any, index: number) => {
-    const updatedRoles = [...roles];
-    updatedRoles[index] = updatedRole;
-    setRoles(updatedRoles);
+  const handleDeleteRole = async (index: number) => {
+    console.log('delete role at index:', index);
+
+    try {
+      const response = await axios.delete(`${baseUrl}/admin/roles/delete/${index}`, axiosInstance);
+
+      if (response.status === 200) {
+        const updatedRoles = roles.filter((role) => role.id !== index);
+        setRoles(updatedRoles);
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
   };
 
-  const handleDeleteRole = (index: number) => {
-    const updatedRoles = roles.filter((_, i) => i !== index); // Remove role at specified index
-    setRoles(updatedRoles);
+  const handleDeletUser = async (index: number) => {
+    console.log('delete role at index:', index);
+
+    try {
+      const response = await axios.delete(`${baseUrl}/admin/users/delete/${index}`, axiosInstance);
+
+      if (response.status === 200) {
+        const updatedUsers = users.filter((user: any) => user.id !== index);
+        setUsers(updatedUsers);
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
   };
+
+  console.log('paginatedData', paginatedData);
 
   return (
     <div>
@@ -157,7 +237,7 @@ const AdminRole = () => {
                       setEditedUser(row);
                       setActive('edit');
                     }}
-                    onDelete={(row: any) => console.log('Delete row:', row)}
+                    onDelete={(row: any) => handleDeletUser(row.id)}
                     columns={columns}
                     data={paginatedData}
                     showHeader={true}
@@ -179,14 +259,15 @@ const AdminRole = () => {
                   <Role
                     key={index}
                     data={role}
-                    onSave={(updatedRole: any) => handleSaveRole(updatedRole, index)}
-                    onDelete={() => handleDeleteRole(index)} // Pass delete callback
+                    isEdit={role.role_name === 'New Role'}
+                    onSave={(updatedRole: any, isEdit: any) => handleSaveRole(updatedRole, isEdit)}
+                    onDelete={() => handleDeleteRole(role.id ?? 0)} // Pass delete callback
                   />
                 ))}
 
                 {/* add new role */}
                 <button
-                  onClick={handleAddRole}
+                  onClick={() => handleAddRole()}
                   type="button"
                   className="w-5 hover:scale-110 duration-300 transition-all"
                 >
