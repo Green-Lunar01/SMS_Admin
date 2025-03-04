@@ -19,7 +19,8 @@ const Login = () => {
         pswd: password
       });
       setUserDetails(response.data.data);
-      localStorage.setItem('edusoftToken', JSON.stringify(response.data.data.token));
+      sessionStorage.setItem('edusoftToken', JSON.stringify(response.data.data.token));
+
       // Redirect or handle successful login
       navigate('/');
     } catch (error) {

@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import admin from '../icons/admin';
 // import audit from '../icons/audit';
 import dashboard from '../icons/dashboard';
@@ -9,6 +9,8 @@ import subscription from '../icons/subscription';
 const Navigation = () => {
   const location = useLocation();
   const currentPath = location.pathname;
+
+  const navigate = useNavigate();
 
   const navs = [
     {
@@ -53,7 +55,14 @@ const Navigation = () => {
         </Link>
       ))}
 
-      <button className={`p-5 flex items-center gap-4`}>
+      <button
+        onClick={() => {
+          sessionStorage.removeItem('edusoftToken');
+          navigate('/login');
+          console.log('Logout');
+        }}
+        className={`p-5 flex items-center gap-4 z-[2000]`}
+      >
         <Logout />
         Logout
       </button>

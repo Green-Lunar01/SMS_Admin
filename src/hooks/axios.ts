@@ -4,7 +4,7 @@ import { AppContext } from '../context/AppContext';
 export function useAxiosInstance() {
   const { userDetails } = useContext(AppContext);
 
-  let token = localStorage.getItem('edusoftToken');
+  let token = sessionStorage.getItem('edusoftToken');
 
   // Remove double quotes from the token
   token = token && token.replace(/"/g, '');
