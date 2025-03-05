@@ -1,29 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 
-const Role = ({ data, onSave, onDelete }: any) => {
-  const [isEditing, setIsEditing] = useState(false); // State to toggle edit mode
-  const [roleName, setRoleName] = useState(data.role); // State to hold role name
-  const [features, setFeatures] = useState([...data.features]); // State for features array
+const Role = ({ data, onSave, onDelete, isEdit }: any) => {
+  const [isEditing, setIsEditing] = useState(isEdit); // State to toggle edit mode
+  const [roleName, setRoleName] = useState(data.role_name); // State to hold role name
+  const [permissions, setPermissions] = useState([...data.permissions]); // State for permissions array
 
   const handleFeatureChange = (index: number, value: string) => {
-    const updatedFeatures = [...features];
-    updatedFeatures[index] = value;
-    setFeatures(updatedFeatures);
+    const updatedPermissions = [...permissions];
+    updatedPermissions[index] = value;
+    setPermissions(updatedPermissions);
   };
 
   const handleAddFeature = () => {
-    setFeatures([...features, '']); // Add an empty string to create a new input field
+    setPermissions([...permissions, '']); // Add an empty string to create a new input field
   };
 
   const handleSave = () => {
-    onSave({ role: roleName, features }); // Pass updated role data to parent
+    onSave({ id: data?.id, role_name: roleName, permissions }, isEditing); // Pass updated role data to parent
     setIsEditing(false); // Exit edit mode
   };
 
-  const handleDelete = () => {
-    if (window.confirm(`Are you sure you want to delete the role "${data.role}"?`)) {
-      onDelete(); // Trigger delete callback
+  const handleDelete = (index: number) => {
+    if (window.confirm(`Are you sure you want to delete the role "${index}"?`)) {
+      onDelete(index); // Trigger delete callback
     }
   };
 
@@ -41,7 +41,7 @@ const Role = ({ data, onSave, onDelete }: any) => {
             />
           </div>
           <div className="flex flex-col items-start w-[60%] gap-2">
-            {features.map((item: string, i: number) => (
+            {permissions?.map((item: string, i: number) => (
               <div key={i} className="w-full flex items-center gap-2">
                 <input
                   type="text"
@@ -79,9 +79,9 @@ const Role = ({ data, onSave, onDelete }: any) => {
       ) : (
         // View mode
         <>
-          <p className="w-[30%]">{data.role}</p>
+          <p className="w-[30%] text-black">{data.role_name}</p>
           <div className="flex flex-col items-start w-[60%] gap-2">
-            {data.features.map((item: string, i: number) => (
+            {data?.permissions?.map((item: string, i: number) => (
               <p className="font-light" key={i}>
                 {item}
               </p>
@@ -97,7 +97,7 @@ const Role = ({ data, onSave, onDelete }: any) => {
             </button>
             <button
               type="button"
-              onClick={handleDelete} // Trigger delete action
+              onClick={() => handleDelete(data.id)} // Trigger delete action
               className="w-5 hover:scale-110 duration-300 transition-all"
             >
               <img src="/delete-icon.svg" alt="Delete" className="w-full h-full" />

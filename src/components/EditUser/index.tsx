@@ -1,51 +1,62 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { useAxiosInstance } from '../../hooks/axios';
-import axios from 'axios';
 
 interface Role {
   role_name: string;
   id?: number;
 }
+
+interface User {
+  id?: number;
+  name?: string;
+  email?: string;
+  role?: string;
+  status?: boolean;
+  created_by?: string;
+}
+
 interface AddUserProps {
   roles: Role[];
   setActive: (active: string) => void;
+  data: User;
 }
 
-const AddUser = ({ roles, setActive }: AddUserProps) => {
+const EditUser = ({ roles, setActive, data }: AddUserProps) => {
   const [loading, setLoading] = useState(false);
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
+  const [fullName, setFullName] = useState(data.name);
+  const [email, setEmail] = useState(data.email);
   const [role, setRole] = useState(0);
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+
   const axiosInstance = useAxiosInstance();
   const baseUrl = import.meta.env.VITE_BASE_URL;
 
-  const handleAddUser = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleEditUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (password !== confirmPassword) {
-      alert('Passwords do not match');
-      return;
-    }
-    if (password.length < 6) {
-      alert('Password must be at least 6 characters long');
-      return;
-    }
+
     setLoading(true);
-    const data = {
-      name: fullName,
-      email,
+
+    const formData = {
+      name: data.name,
+      email: data.email,
       role_id: role,
-      password,
-      confirmPassword
+      status: true
     };
+
     try {
-      await axios.post(`${baseUrl}/admin/users/create`, data, axiosInstance);
+      const response = await axios.put(
+        `${baseUrl}/admin/users/edit/${data.id}`,
+        formData,
+        axiosInstance
+      );
+
+      if (response.status === 200) {
+        setActive('User');
+      }
     } catch (error) {
       console.error('Error adding user:', error);
     } finally {
       setLoading(false);
-      setActive('User');
     }
   };
 
@@ -55,7 +66,7 @@ const AddUser = ({ roles, setActive }: AddUserProps) => {
         <h1 className="text-xl text-white font-semibold">Add New User</h1>
       </header>
 
-      <form className="w-[60%] mt-10 flex flex-col gap-5" onSubmit={handleAddUser}>
+      <form className="w-[60%] mt-10 flex flex-col gap-5" onSubmit={handleEditUser}>
         <div className="w-full">
           <p className="font-semibold text-xs">Full Name</p>
           <input
@@ -92,38 +103,16 @@ const AddUser = ({ roles, setActive }: AddUserProps) => {
           </select>
         </div>
 
-        <div className="flex justify-between items-center">
-          <div className="w-[48%]">
-            <p className="font-semibold text-xs">Password</p>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="p-3 mt-2 rounded-md w-full outline-primary-light border border-[#D9D9D9]"
-            />
-          </div>
-
-          <div className="w-[48%]">
-            <p className="font-semibold text-xs">Confirm Password</p>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="p-3 mt-2 rounded-md w-full outline-primary-light border border-[#D9D9D9]"
-            />
-          </div>
-        </div>
-
         <button
           type="submit"
           className="bg-primary-light px-5 py-3 text-sm text-white w-fit rounded-md"
           disabled={loading}
         >
-          {loading ? 'Creating...' : 'Create User'}
+          {loading ? 'Editing...' : 'Edit User'}
         </button>
       </form>
     </div>
   );
 };
 
-export default AddUser;
+export default EditUser;

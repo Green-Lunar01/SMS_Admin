@@ -2,7 +2,33 @@
 import Table from '../Table';
 import Pagination from '../Pagination';
 
-const UserTable = ({ columns, paginatedData, schools, handlePageChange }: any) => {
+const UserTable = ({
+  columns,
+  paginatedData,
+  schools,
+  handlePageChange,
+  handleSearch,
+  searchQuery
+}: any) => {
+  const convertToCSV = (data: any) => {
+    const headers = columns.map((col: any) => col.header).join(',');
+    const rows = data.map((row: any) => columns.map((col: any) => row[col.accessor]).join(','));
+    return [headers, ...rows].join('\n');
+  };
+
+  const downloadCSV = (data: any) => {
+    const csv = convertToCSV(data);
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.setAttribute('href', url);
+    a.setAttribute('download', 'schools.csv');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   return (
     <div>
       <section className="flex flex-col md:flex-row justify-between items-start gap-5 md:gap-0 md:items-center py-5 md:mt-5">
@@ -12,6 +38,8 @@ const UserTable = ({ columns, paginatedData, schools, handlePageChange }: any) =
             <input
               type="text"
               placeholder="Search"
+              value={searchQuery || ''}
+              onChange={handleSearch}
               className="border outline-primary-light rounded-full text-sm placeholder:text-black placeholder:text-sm py-2 pl-10 pr-4"
             />
           </div>
@@ -30,6 +58,7 @@ const UserTable = ({ columns, paginatedData, schools, handlePageChange }: any) =
 
           <button
             type="button"
+            onClick={() => downloadCSV(schools)}
             className="flex items-center gap-2 px-7 py-3 rounded-md bg-primary-light text-white"
           >
             <img src="/file-icon.svg" alt="" className="w-5" />

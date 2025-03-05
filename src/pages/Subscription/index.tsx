@@ -1,23 +1,79 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { ClimbingBoxLoader } from 'react-spinners';
+
+import { useAxiosInstance } from '../../hooks/axios';
+
 import PlanCard from '../../components/PlanCard';
 import UserTable from '../../components/UserTable';
+
+export interface Subscription {
+  id?: number | string;
+  name: string;
+  price: number;
+  duration: string;
+  features: string[];
+}
 
 const Subscription = () => {
   const [active, setActive] = useState('Plan');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [cards, setCards] = useState<any[]>([]); // Array to store card data
+  const [cards, setCards] = useState<Subscription[]>([]);
+  const [data, setData] = useState<Subscription[]>([]);
+  const [isNewSub, setIsNewSub] = useState(false);
+  const [subscribers, setSubscribers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const axiosInstance = useAxiosInstance();
+  const baseUrl = import.meta.env.VITE_BASE_URL;
 
   const handleAddCard = () => {
-    setCards([...cards, { planName: '', planPrice: '', billingCycle: '', features: [] }]);
+    setIsNewSub(true);
+    setData([...data, { name: '', price: 0, duration: '', features: [] }]);
   };
 
-  const handleSaveCard = (data: any, index: number) => {
+  const handleSaveSubscription = async (data: Subscription) => {
+    setLoading(true);
+    try {
+      await axios.put(`${baseUrl}/admin/subscriptions/edit/${data.id}`, data, axiosInstance);
+      console.log('refetching data');
+      await fetchData();
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCreateSubscription = async (data: Subscription) => {
+    setLoading(true);
+    try {
+      await axios.post(`${baseUrl}/admin/subscriptions/create`, data, axiosInstance);
+
+      console.log('refetching data');
+      await fetchData();
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+      setIsNewSub(false);
+    }
+  };
+
+  const handleSaveCard = (data: Subscription, index: number) => {
     const updatedCards = [...cards];
     updatedCards[index] = data;
     setCards(updatedCards);
-    console.log('Updated Cards:', updatedCards); // Debugging or further processing
+
+    if (isNewSub) {
+      handleCreateSubscription(data);
+    } else {
+      handleSaveSubscription(data);
+    }
   };
 
   const handlePageChange = (page: number, size: number) => {
@@ -25,25 +81,62 @@ const Subscription = () => {
     setPageSize(size);
   };
 
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${baseUrl}/admin/subscriptions`, axiosInstance);
+      setData(response.data.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchSubscribers = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${baseUrl}/admin/subscribers`, axiosInstance);
+      setSubscribers(response.data.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    fetchSubscribers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleSearch = (event: any) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredData = data.filter((school: any) =>
+    school.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const columns = [
-    { header: 'Name', accessor: 'name' },
+    { header: 'Name', accessor: 'student_name' },
     { header: 'Username', accessor: 'username' },
-    { header: 'School', accessor: 'school' },
-    { header: 'Class', accessor: 'class' },
-    { header: 'Plan', accessor: 'plan' },
-    { header: 'Status', accessor: 'status' }
+    { header: 'School', accessor: 'school_name' },
+    { header: 'Class', accessor: 'class_name' },
+    { header: 'Plan', accessor: 'subscription_name' }
+    // { header: 'Status', accessor: 'status' }
   ];
 
-  const schools = Array(15).fill({
-    name: 'Olivia Huel',
-    username: 'BT456789763',
-    school: 'Pa academy',
-    class: 'J.S.S 1',
-    plan: 'Pro',
-    status: 'Active'
-  });
+  const paginatedData = subscribers.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
-  const paginatedData = schools.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-[100vh]">
+        <ClimbingBoxLoader color="#DFF8EF" />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -73,9 +166,10 @@ const Subscription = () => {
       <section>
         {active === 'Plan' && (
           <div className="flex flex-wrap gap-5 mt-5 w-full">
-            {cards.map((_card, index) => (
-              <PlanCard key={index} onSave={(data) => handleSaveCard(data, index)} />
-            ))}
+            {data &&
+              data.map((_card, index) => (
+                <PlanCard data={_card} key={index} onSave={(data) => handleSaveCard(data, index)} />
+              ))}
 
             <button type="button" onClick={handleAddCard} className="px-4 py-2 rounded-md">
               <img src="/add-circle-lg.svg" alt="" />
@@ -88,8 +182,10 @@ const Subscription = () => {
             <UserTable
               columns={columns}
               paginatedData={paginatedData}
-              schools={schools}
+              schools={filteredData}
               handlePageChange={handlePageChange}
+              handleSearch={handleSearch}
+              searchQuery={searchQuery}
             />
           </div>
         )}

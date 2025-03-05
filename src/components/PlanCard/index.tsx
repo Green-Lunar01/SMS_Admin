@@ -1,12 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
+import type { Subscription } from '../../pages/Subscription';
 
-const PlanCard = ({ onSave }: { onSave: (data: any) => void }) => {
-  const [features, setFeatures] = useState<string[]>(['']);
+const PlanCard = ({
+  onSave,
+  data
+}: {
+  onSave: (data: Subscription) => void;
+  data: Subscription;
+}) => {
+  const [features, setFeatures] = useState<string[]>(data.features || ['']);
   const [formData, setFormData] = useState({
-    planName: '',
-    planPrice: '',
-    billingCycle: 'month'
+    id: data.id || '',
+    name: data.name || '',
+    price: Number(data.price) || 0,
+    duration: data.duration || ''
   });
 
   const handleAddFeature = () => {
@@ -20,7 +27,12 @@ const PlanCard = ({ onSave }: { onSave: (data: any) => void }) => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    setFormData({
+      ...formData,
+      [name]: name === 'price' ? Number(value) : value
+    });
   };
 
   const handleSave = () => {
@@ -29,7 +41,7 @@ const PlanCard = ({ onSave }: { onSave: (data: any) => void }) => {
   };
 
   return (
-    <div className="border px-3 pt-4 pb-6 rounded-md w-full md:w-[25%] text-sm">
+    <div className="border px-3 pt-4 pb-6 rounded-md w-full md:w-[40%] lg:w-[25%] text-sm">
       <div className="flex justify-end items-end">
         <button type="button" className="text-primary-light" onClick={handleSave}>
           Save
@@ -39,8 +51,8 @@ const PlanCard = ({ onSave }: { onSave: (data: any) => void }) => {
       <form className="w-full mt-5 flex flex-col gap-5">
         <input
           type="text"
-          name="planName"
-          value={formData.planName}
+          name="name"
+          value={formData.name}
           onChange={handleInputChange}
           placeholder="Plan Name"
           className="w-full rounded-md placeholder:text-xs placeholder:text-black outline-primary-light p-3 bg-[#FBFBFB]"
@@ -49,21 +61,21 @@ const PlanCard = ({ onSave }: { onSave: (data: any) => void }) => {
         <div className="flex gap-3 items-center justify-between">
           <input
             type="number"
-            name="planPrice"
-            value={formData.planPrice}
+            name="price"
+            value={formData.price}
             onChange={handleInputChange}
             placeholder="Plan Price"
             className="w-[50%] rounded-md placeholder:text-xs placeholder:text-black outline-primary-light p-3 bg-[#FBFBFB]"
           />
 
           <select
-            name="billingCycle"
-            value={formData.billingCycle}
+            name="duration"
+            value={formData.duration}
             onChange={handleInputChange}
             className="w-[50%] p-3 bg-[#FBFBFB] rounded-md outline-primary-light"
           >
-            <option value="month">month</option>
-            <option value="year">year</option>
+            <option value="perMonth">month</option>
+            <option value="perAnnum">year</option>
           </select>
         </div>
 

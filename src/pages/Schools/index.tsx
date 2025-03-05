@@ -1,43 +1,65 @@
-import { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useEffect } from 'react';
+import { ClimbingBoxLoader } from 'react-spinners';
+import axios from 'axios';
+import { useAxiosInstance } from '../../hooks/axios';
 import UserTable from '../../components/UserTable';
 
 const Schools = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const handlePageChange = (page: number, size: number) => {
-    setCurrentPage(page);
-    setPageSize(size);
-  };
+  const pageSize = 10;
+  const axiosInstance = useAxiosInstance();
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`${baseUrl}/admin/get-schools`, axiosInstance);
+        setData(response.data.data.schools);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const columns = [
-    { header: 'Name', accessor: 'Name' },
+    { header: 'Name', accessor: 'school_name' },
     { header: 'Email Address', accessor: 'email' },
-    { header: 'No. of Students', accessor: 'students' },
-    { header: 'Location', accessor: 'location' },
-    { header: 'No. of Employee', accessor: 'employee' },
-    { header: 'Status', accessor: 'status' }
+    { header: 'No. of Students', accessor: 'student_count' },
+    { header: 'Location', accessor: 'location' }
   ];
 
-  const schools = Array(15).fill({
-    Name: 'Mama high school',
-    email: 'Brittany1@yahoo.com',
-    students: 600,
-    location: 'Nigeria',
-    employee: 60,
-    teachers: 20,
-    totalSubjects: 15,
-    status: 'Active',
-    SignUpDate: '23/02/2024',
-    SignUpRole: 'School owner',
-    phoneNumber: '+2347067234678',
-    tagLine: 'Education is pride:',
-    address: 'N0, 4 Alagbo street lagos',
-    website: 'Www.mamahigh.com',
-    src: '/mock-school-logo.svg'
-  });
+  const handlePageChange = (page: any) => {
+    setCurrentPage(page);
+  };
 
-  const paginatedData = schools.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  const handleSearch = (event: any) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredData = data.filter((school: any) =>
+    school.school_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const paginatedData = filteredData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-[100vh]">
+        <ClimbingBoxLoader color="#DFF8EF" />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -46,8 +68,10 @@ const Schools = () => {
       <UserTable
         columns={columns}
         paginatedData={paginatedData}
-        schools={schools}
+        schools={filteredData}
         handlePageChange={handlePageChange}
+        handleSearch={handleSearch}
+        searchQuery={searchQuery}
       />
     </div>
   );
