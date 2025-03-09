@@ -1,11 +1,14 @@
 import axios from 'axios';
-import { useContext, useState } from 'react';
-import { AppContext } from '../../context/AppContext';
+import { ClipLoader } from 'react-spinners';
 import { useNavigate } from 'react-router';
+import { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../../context/AppContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const { setUserDetails } = useContext(AppContext);
   const navigate = useNavigate();
@@ -14,20 +17,34 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await axios.post(`${baseUrl}/admin/auth/signin`, {
         email,
         pswd: password
       });
-      setUserDetails(response.data.data);
-      sessionStorage.setItem('edusoftToken', JSON.stringify(response.data.data.token));
 
-      // Redirect or handle successful login
-      navigate('/');
+      if (response.data.data) {
+        setUserDetails(response.data.data);
+        sessionStorage.setItem('edusoftToken', JSON.stringify(response.data.data.token));
+
+        // Redirect or handle successful login
+        navigate('/');
+        setLoading(false);
+      }
     } catch (error) {
+      setLoading(false);
+      setError('Invalid email or password');
       console.error('Error logging in:', error);
-      // Handle error
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      setTimeout(() => {
+        setError('');
+      }, 3000);
+    }
+  }, [error]);
 
   return (
     <div className="h-[100vh] w-full flex justify-center items-center">
@@ -81,8 +98,10 @@ const Login = () => {
             type="submit"
             className="py-3 w-full text-center text-sm bg-primary-light text-white rounded-md"
           >
-            Sign in
+            {loading ? <ClipLoader color="white" size={20} /> : 'Sign in'}
           </button>
+
+          {error !== '' && <p className="text-red-500 text-xs text-center">{error}</p>}
         </form>
       </div>
     </div>
