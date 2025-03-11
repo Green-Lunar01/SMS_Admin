@@ -1,4 +1,4 @@
-const logout = ({ color = '#08190E' }) => {
+const logout = ({ color = 'red' }) => {
   return (
     <div>
       <svg

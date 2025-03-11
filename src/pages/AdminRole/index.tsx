@@ -230,6 +230,7 @@ const AdminRole = () => {
                     data={paginatedData}
                     showHeader={true}
                     isSchool={true}
+                    tableName="admin"
                   />
                 </section>
 

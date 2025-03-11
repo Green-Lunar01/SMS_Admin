@@ -8,7 +8,8 @@ const UserTable = ({
   schools,
   handlePageChange,
   handleSearch,
-  searchQuery
+  searchQuery,
+  tableName
 }: any) => {
   const convertToCSV = (data: any) => {
     const headers = columns.map((col: any) => col.header).join(',');
@@ -70,7 +71,13 @@ const UserTable = ({
         Total: <span className="text-primary-light">{schools.length}</span>
       </p>
       <section className="w-full my-5">
-        <Table columns={columns} data={paginatedData} showHeader={true} isSchool={true} />
+        <Table
+          columns={columns}
+          data={paginatedData}
+          showHeader={true}
+          isSchool={true}
+          tableName={tableName}
+        />
       </section>
       <Pagination totalItems={schools.length} onPageChange={handlePageChange} />
     </div>

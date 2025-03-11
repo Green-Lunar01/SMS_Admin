@@ -7,6 +7,7 @@ const Table = ({
   title,
   data,
   columns,
+  tableName = '',
   showHeader = false,
   isSchool = false,
   deletable = false, // New prop for delete
@@ -25,7 +26,7 @@ const Table = ({
 
   return (
     <div className="w-full bg-white rounded-lg">
-      {title && <h2 className="text-lg font-semibold p-4 pb-2 border-b border-black">{title}</h2>}
+      {title && <h2 className="text-lg font-semibold p-4 pb-2">{title}</h2>}
       <div className="overflow-x-auto">
         <table className="min-w-full">
           {showHeader && (
@@ -54,8 +55,18 @@ const Table = ({
           )}
           <tbody>
             {data?.length === 0 && (
-              <tr className="flex items-center justify-center">
-                <td>No data available</td>
+              <tr>
+                <td
+                  colSpan={columns.length + (editable ? 1 : 0) + (deletable ? 1 : 0)}
+                  className="text-center py-[5rem]"
+                >
+                  <img
+                    src="/empty-state-icons/schools.svg"
+                    alt="image"
+                    className="w-10 mx-auto mb-2"
+                  />
+                  <p>{tableName !== 'admin' ? `No ${tableName} available` : 'Yet to add admin'}</p>
+                </td>
               </tr>
             )}
             {!isSchool &&

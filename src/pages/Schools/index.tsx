@@ -72,6 +72,7 @@ const Schools = () => {
         handlePageChange={handlePageChange}
         handleSearch={handleSearch}
         searchQuery={searchQuery}
+        tableName="schools"
       />
     </div>
   );

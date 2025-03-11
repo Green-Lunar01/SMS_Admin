@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router';
 import admin from '../icons/admin';
-// import audit from '../icons/audit';
+import audit from '../icons/audit';
 import dashboard from '../icons/dashboard';
 import schools from '../icons/schools';
 import Logout from '../icons/logout';
@@ -32,12 +32,12 @@ const Navigation = () => {
       title: 'Admin Role',
       icon: admin,
       path: '/admin-role'
+    },
+    {
+      title: 'Audit Log',
+      icon: audit,
+      path: '/audit-logs'
     }
-    // {
-    //   title: 'Audit Log',
-    //   icon: audit,
-    //   path: '/audit-logs'
-    // }
   ];
 
   return (
@@ -60,7 +60,7 @@ const Navigation = () => {
           sessionStorage.removeItem('edusoftToken');
           navigate('/login');
         }}
-        className={`p-5 flex items-center gap-4 z-[2000]`}
+        className="p-5 flex items-center gap-4 text-red-600"
       >
         <Logout />
         Logout

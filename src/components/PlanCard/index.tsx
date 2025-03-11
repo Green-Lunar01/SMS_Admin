@@ -3,9 +3,11 @@ import type { Subscription } from '../../pages/Subscription';
 
 const PlanCard = ({
   onSave,
+  onDelete,
   data
 }: {
   onSave: (data: Subscription) => void;
+  onDelete: (data: Subscription['id']) => void;
   data: Subscription;
 }) => {
   const [features, setFeatures] = useState<string[]>(data.features || ['']);
@@ -39,10 +41,21 @@ const PlanCard = ({
     const dataToSave = { ...formData, features };
     onSave(dataToSave);
   };
+  const handleDelete = () => {
+    onDelete(formData.id);
+  };
 
+  const onFeatureDelete = (index: number) => {
+    const updatedFeatures = features.filter((_, i) => i !== index);
+    setFeatures(updatedFeatures);
+  };
   return (
     <div className="border px-3 pt-4 pb-6 rounded-md w-full md:w-[40%] lg:w-[25%] text-sm">
-      <div className="flex justify-end items-end">
+      <div className="flex justify-between items-end">
+        <button type="button" className="w-5" onClick={handleDelete}>
+          <img src="/delete-icon.svg" alt="delete icon" className="w-full" />
+        </button>
+
         <button type="button" className="text-primary-light" onClick={handleSave}>
           Save
         </button>
@@ -62,7 +75,7 @@ const PlanCard = ({
           <input
             type="number"
             name="price"
-            value={formData.price}
+            value={formData.price === 0 ? '' : formData.price}
             onChange={handleInputChange}
             placeholder="Plan Price"
             className="w-[50%] rounded-md placeholder:text-xs placeholder:text-black outline-primary-light p-3 bg-[#FBFBFB]"
@@ -80,14 +93,20 @@ const PlanCard = ({
         </div>
 
         {features.map((feature, index) => (
-          <input
-            key={index}
-            type="text"
-            value={feature}
-            onChange={(e) => handleFeatureChange(e.target.value, index)}
-            placeholder={`Feature ${index + 1}`}
-            className="w-full rounded-md placeholder:text-xs placeholder:text-black outline-primary-light p-3 bg-[#FBFBFB]"
-          />
+          <div className="flex items-center gap-3" key={index}>
+            <input
+              key={index}
+              type="text"
+              value={feature}
+              onChange={(e) => handleFeatureChange(e.target.value, index)}
+              placeholder={`Feature ${index + 1}`}
+              className="w-full rounded-md placeholder:text-xs placeholder:text-black outline-primary-light p-3 bg-[#FBFBFB]"
+            />
+
+            <button type="button" className="w-5" onClick={() => onFeatureDelete(index)}>
+              <img src="/delete-icon.svg" alt="delete icon" className="w-full" />
+            </button>
+          </div>
         ))}
 
         <button

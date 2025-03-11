@@ -25,6 +25,7 @@ const Subscription = () => {
   const [isNewSub, setIsNewSub] = useState(false);
   const [subscribers, setSubscribers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -42,7 +43,8 @@ const Subscription = () => {
       await axios.put(`${baseUrl}/admin/subscriptions/edit/${data.id}`, data, axiosInstance);
       console.log('refetching data');
       await fetchData();
-    } catch (error) {
+    } catch (error: any) {
+      setError(error.response.data.message);
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
@@ -50,13 +52,15 @@ const Subscription = () => {
   };
 
   const handleCreateSubscription = async (data: Subscription) => {
+    console.log('data', data);
     setLoading(true);
     try {
       await axios.post(`${baseUrl}/admin/subscriptions/create`, data, axiosInstance);
 
       console.log('refetching data');
       await fetchData();
-    } catch (error) {
+    } catch (error: any) {
+      setError(error.response.data.message);
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
@@ -76,6 +80,25 @@ const Subscription = () => {
     }
   };
 
+  const handleDeleteCard = async (id: any) => {
+    console.log('deleting card', id);
+    setLoading(true);
+    try {
+      const response = await axios.delete(
+        `${baseUrl}/admin/subscriptions/remove/${id}`,
+        axiosInstance
+      );
+      console.log('response', response);
+      console.log('refetching data');
+      fetchData();
+    } catch (error: any) {
+      setError(error.response.data.message);
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handlePageChange = (page: number, size: number) => {
     setCurrentPage(page);
     setPageSize(size);
@@ -86,7 +109,8 @@ const Subscription = () => {
     try {
       const response = await axios.get(`${baseUrl}/admin/subscriptions`, axiosInstance);
       setData(response.data.data);
-    } catch (error) {
+    } catch (error: any) {
+      setError(error.response.data.message);
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
@@ -98,7 +122,8 @@ const Subscription = () => {
     try {
       const response = await axios.get(`${baseUrl}/admin/subscribers`, axiosInstance);
       setSubscribers(response.data.data);
-    } catch (error) {
+    } catch (error: any) {
+      setError(error.response.data.message);
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
@@ -111,12 +136,20 @@ const Subscription = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (error !== '') {
+      setTimeout(() => {
+        setError('');
+      }, 3000);
+    }
+  }, [error]);
+
   const handleSearch = (event: any) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredData = data.filter((school: any) =>
-    school.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredData = data.filter(
+    (school: any) => school && school.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const columns = [
@@ -162,13 +195,20 @@ const Subscription = () => {
         </button>
       </div>
 
+      {error !== '' && <p className="text-red-500 text-xs mt-4">{error}</p>}
+
       {/* --- content */}
       <section>
         {active === 'Plan' && (
           <div className="flex flex-wrap gap-5 mt-5 w-full">
             {data &&
               data.map((_card, index) => (
-                <PlanCard data={_card} key={index} onSave={(data) => handleSaveCard(data, index)} />
+                <PlanCard
+                  data={_card}
+                  key={index}
+                  onDelete={(id) => handleDeleteCard(id)}
+                  onSave={(data) => handleSaveCard(data, index)}
+                />
               ))}
 
             <button type="button" onClick={handleAddCard} className="px-4 py-2 rounded-md">
@@ -186,6 +226,7 @@ const Subscription = () => {
               handlePageChange={handlePageChange}
               handleSearch={handleSearch}
               searchQuery={searchQuery}
+              tableName="Subscribers"
             />
           </div>
         )}
