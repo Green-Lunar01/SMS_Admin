@@ -1,11 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../../context/AppContext';
 import axios from 'axios';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { AppContext } from '../../context/AppContext';
+
 import { useAxiosInstance } from '../../hooks/axios';
 
 const Notification = () => {
   const [notifications, setNotifications] = useState([]);
+  const notificationRef = useRef<HTMLDivElement>(null);
 
   const { setShowNotification } = useContext(AppContext);
   const axiosInstance = useAxiosInstance();
@@ -29,9 +31,22 @@ const Notification = () => {
     getNotifications();
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
+        setShowNotification(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [setShowNotification]);
+
   return (
     <div className="bg-black bg-opacity-50 fixed top-0 left-0 w-full h-[100vh] z-[1000] flex items-end justify-end">
-      <div className="bg-white w-full md:w-[50%] lg:w-[30%] h-full">
+      <div ref={notificationRef} className="bg-white w-full md:w-[50%] lg:w-[30%] h-full">
         <div className="px-5 py-3 border-b flex items-center justify-between">
           <h1 className="font-semibold">Notifications</h1>
 
@@ -58,6 +73,17 @@ const Notification = () => {
                 </div>
               </div>
             ))}
+
+          {notifications.length === 0 && (
+            <div className="flex flex-col gap-2 items-center justify-center h-full">
+              <img
+                src="/empty-state-icons/notification.svg"
+                alt="notification icon"
+                className="w-[3rem]"
+              />
+              <p>No notifications</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
