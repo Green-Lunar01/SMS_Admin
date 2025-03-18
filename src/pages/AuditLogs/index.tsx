@@ -24,10 +24,10 @@ const AuditLogs = () => {
   });
 
   const columns = [
-    { header: 'User', accessor: 'user' },
+    { header: 'User', accessor: 'username' },
     { header: 'Email Address', accessor: 'email' },
-    { header: 'Date', accessor: 'date' },
-    { header: 'Page Visit', accessor: 'page_visit' },
+    { header: 'Date', accessor: 'created_at' },
+    { header: 'Page Visit', accessor: 'page_visited' },
     { header: 'Role', accessor: 'role' },
     { header: 'Login_time', accessor: 'login_time' },
     { header: 'Logout_time', accessor: 'logout_time' }
@@ -64,8 +64,8 @@ const AuditLogs = () => {
   const fetchLogs = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${baseUrl}/admin/logs`, axiosInstance);
-      setData(response.data.data);
+      const response = await axios.get(`${baseUrl}/admin/get-audit-log`, axiosInstance);
+      setData(response.data.data.logs);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -132,8 +132,8 @@ const AuditLogs = () => {
 
           <section className="w-full my-5">
             <Table
-              deletable={true}
-              editable={true}
+              deletable={false}
+              editable={false}
               columns={columns}
               data={paginatedData}
               showHeader={true}
