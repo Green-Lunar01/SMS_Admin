@@ -48,7 +48,7 @@ const Login = () => {
 
   return (
     <div className="h-[100vh] w-full flex justify-center items-center">
-      <div className="shadow-md w-full md:w-[60%] lg:w-[30%] px-7 md:px-12 md:py-16 py-10 flex items-start flex-col gap-5">
+      <div className="shadow-md w-full md:w-[30rem] px-7 md:px-12 md:py-16 py-10 flex items-start flex-col gap-5">
         <h1 className="text-xl font-semibold text-primary-light text-center w-full">
           Welcome Back
         </h1>

@@ -17,7 +17,7 @@ const Role = ({ data, onSave, onDelete, isEdit }: any) => {
   };
 
   const handleSave = () => {
-    onSave({ id: data?.id, role_name: roleName, permissions }, isEditing); // Pass updated role data to parent
+    onSave({ id: data?.id, role_name: roleName, permissions }, isEdit); // Pass updated role data to parent
     setIsEditing(false); // Exit edit mode
   };
 

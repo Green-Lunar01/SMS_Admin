@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import DatePicker from '../../components/DataPicker';
 import Table from '../../components/Table';
@@ -18,6 +19,8 @@ const AuditLogs = () => {
   const [pageSize, setPageSize] = useState(10);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+
   const [formData, setFormData] = useState<FormData>({
     date: '',
     eventDate: ''
@@ -32,8 +35,6 @@ const AuditLogs = () => {
     { header: 'Login_time', accessor: 'login_time' },
     { header: 'Logout_time', accessor: 'logout_time' }
   ];
-
-  const paginatedData = data && data.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   // This function will be called when a date is selected
   const handleChange = (value: string, name?: string): void => {
@@ -61,6 +62,10 @@ const AuditLogs = () => {
     setPageSize(size);
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setSearchQuery(e.target.value);
+  };
+
   const fetchLogs = async () => {
     setLoading(true);
     try {
@@ -72,6 +77,13 @@ const AuditLogs = () => {
       setLoading(false);
     }
   };
+
+  const filteredData = data.filter(
+    (item: any) =>
+      item.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.page_visited.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   useEffect(() => {
     fetchLogs();
@@ -95,6 +107,8 @@ const AuditLogs = () => {
                 <input
                   type="text"
                   placeholder="Search"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
                   className="border outline-primary-light rounded-full text-sm placeholder:text-black placeholder:text-sm py-2 pl-10 pr-4"
                 />
               </div>
@@ -135,14 +149,14 @@ const AuditLogs = () => {
               deletable={false}
               editable={false}
               columns={columns}
-              data={paginatedData}
+              data={filteredData.slice((currentPage - 1) * pageSize, currentPage * pageSize)}
               showHeader={true}
               isSchool={true}
               tableName="audit logs"
             />
           </section>
 
-          <Pagination totalItems={data.length} onPageChange={handlePageChange} />
+          <Pagination totalItems={filteredData.length} onPageChange={handlePageChange} />
         </>
       )}
     </>

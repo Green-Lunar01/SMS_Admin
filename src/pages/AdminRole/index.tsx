@@ -77,7 +77,7 @@ const AdminRole = () => {
   }
 
   const handleSaveRole = async (updatedRole: any, isEdit: any) => {
-    if (isEdit === true) {
+    if (isEdit !== true) {
       try {
         const response = await axios.put(
           `${baseUrl}/admin/roles/edit/${updatedRole.id}`,
