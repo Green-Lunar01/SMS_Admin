@@ -57,6 +57,8 @@ interface AppContextType {
   setShowChat: React.Dispatch<React.SetStateAction<boolean>>;
   showMobileNav: boolean;
   setShowMobileNav: React.Dispatch<React.SetStateAction<boolean>>;
+  username: string;
+  setUsername: React.Dispatch<React.SetStateAction<string>>;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -73,6 +75,7 @@ const AppContextProvider = ({ children }: any) => {
   const [showNotification, setShowNotification] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [showMobileNav, setShowMobileNav] = useState(false);
+  const [username, setUsername] = useState('U');
 
   return (
     <AppContext.Provider
@@ -87,6 +90,8 @@ const AppContextProvider = ({ children }: any) => {
         setShowSchoolDetails,
         showStudentDetails,
         setShowStudentDetails,
+        username,
+        setUsername,
         studentDetails,
         setStudentDetails,
         showAdminDetails,

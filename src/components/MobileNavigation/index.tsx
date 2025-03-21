@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import admin from '../icons/admin';
 import audit from '../icons/audit';
 import dashboard from '../icons/dashboard';
@@ -11,6 +11,7 @@ import { User } from '../../../data';
 
 const MobileNavigation = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const currentPath = location.pathname;
   const { setShowChat, setShowNotification, setShowMobileNav } = useContext(AppContext);
 
@@ -97,7 +98,13 @@ const MobileNavigation = () => {
         </Link>
       ))}
 
-      <button className="p-5 flex items-center gap-4 text-red-600">
+      <button
+        onClick={() => {
+          sessionStorage.removeItem('edusoftToken');
+          navigate('/login');
+        }}
+        className="p-5 flex items-center gap-4 text-red-600"
+      >
         <Logout />
         Logout
       </button>

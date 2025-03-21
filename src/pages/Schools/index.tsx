@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
-import { ClimbingBoxLoader } from 'react-spinners';
 import axios from 'axios';
 import { useAxiosInstance } from '../../hooks/axios';
 import UserTable from '../../components/UserTable';
@@ -55,8 +54,11 @@ const Schools = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-[100vh]">
-        <ClimbingBoxLoader color="#DFF8EF" />
+      <div className="flex items-center justify-center h-[70vh] border">
+        <div className="flex flex-col items-center gap-3">
+          <img src="/animated-logo.svg" alt="" className="w-[6rem]" />
+          <p>Loading...</p>
+        </div>
       </div>
     );
   }

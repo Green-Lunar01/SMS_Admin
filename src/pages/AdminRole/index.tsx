@@ -6,7 +6,6 @@ import Role from '../../components/Role';
 import AddUser from '../../components/AddUser';
 import { useAxiosInstance } from '../../hooks/axios';
 import axios from 'axios';
-import { ClimbingBoxLoader } from 'react-spinners';
 import EditUser from '../../components/EditUser';
 
 const AdminRole = () => {
@@ -159,8 +158,11 @@ const AdminRole = () => {
   return (
     <div>
       {loading ? (
-        <div className="h-[100vh] flex items-center justify-center w-full">
-          <ClimbingBoxLoader color="#13A541" />
+        <div className="flex items-center justify-center h-[70vh] border">
+          <div className="flex flex-col items-center gap-3">
+            <img src="/animated-logo.svg" alt="" className="w-[6rem]" />
+            <p>Loading...</p>
+          </div>
         </div>
       ) : (
         <>

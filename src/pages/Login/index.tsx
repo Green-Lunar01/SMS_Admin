@@ -10,7 +10,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const { setUserDetails } = useContext(AppContext);
+  const { setUserDetails, setUsername } = useContext(AppContext);
   const navigate = useNavigate();
   const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -24,6 +24,7 @@ const Login = () => {
       });
 
       if (response.data.data) {
+        setUsername(response?.data?.data?.user?.name);
         setUserDetails(response.data.data);
         sessionStorage.setItem('edusoftToken', JSON.stringify(response.data.data.token));
 

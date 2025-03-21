@@ -5,7 +5,7 @@ import Table from '../../components/Table';
 import Pagination from '../../components/Pagination';
 import axios from 'axios';
 import { useAxiosInstance } from '../../hooks/axios';
-import { ClimbingBoxLoader } from 'react-spinners';
+
 interface FormData {
   date: string;
   eventDate: string;
@@ -93,8 +93,11 @@ const AuditLogs = () => {
   return (
     <>
       {loading ? (
-        <div className="flex items-center justify-center h-[100vh]">
-          <ClimbingBoxLoader color="#DFF8EF" />
+        <div className="flex items-center justify-center h-[70vh] border">
+          <div className="flex flex-col items-center gap-3">
+            <img src="/animated-logo.svg" alt="" className="w-[6rem]" />
+            <p>Loading...</p>
+          </div>
         </div>
       ) : (
         <>
